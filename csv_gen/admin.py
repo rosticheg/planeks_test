@@ -1,3 +1,8 @@
 from django.contrib import admin
+from csv_gen.models import Schema
 
-# Register your models here.
+class SchemaAdmin(admin.ModelAdmin):
+    list_display = ("title",)
+
+admin.site.register(Schema, SchemaAdmin)
+

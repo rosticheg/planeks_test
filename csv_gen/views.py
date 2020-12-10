@@ -1,5 +1,12 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from .models import Schema
+from django.views.generic import TemplateView, ListView
+import logging
+
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 
 @login_required
@@ -9,8 +16,9 @@ def index(request):
 
 @login_required
 def dashboard(request):
-    return render(request, 'csv_gen/dashboard.html', {'section': 'dashboard'})
-
-
+    context = {
+        'schemes': Schema.objects.filter(user=request.user)
+    }    
+    return render(request, 'csv_gen/dashboard.html', context)
 
 

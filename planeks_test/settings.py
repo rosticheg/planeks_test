@@ -126,5 +126,6 @@ CELERY_BROKER_URL = 'amqp://localhost'
 
 
 # Redirect
-LOGIN_REDIRECT_URL='/'
+#LOGIN_REDIRECT_URL='/'
+LOGIN_REDIRECT_URL='/dashboard'
 

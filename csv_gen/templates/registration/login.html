@@ -3,11 +3,17 @@
 {% block content %}
 
 
-<div class="container pb-3 my-sm-3 my-lg-50">
-  <div class="card-deck mb-9 text-center">
-    <div class="card mb-9 shadow-sm">
-      <div class="card-body">
+<div class="container pb-3 my-sm-3 my-lg-50 col-3 align-items-center">
+  <div class="card-deck mb-3 text-center">
+    <div class="card mb-4">
 
+      <div class="card-header">
+        <span class="login100-form-title p-b-32">
+          Account Login
+        </span>
+      </div>
+
+      <div class="card-body">
         {% if form.errors %}
           <p>Your username and password didn't match. Please try again.</p>
         {% endif %}
@@ -20,10 +26,6 @@
         {% endif %}
         {% endif %}
 
-
-        <span class="login100-form-title p-b-32">
-          Account Login
-        </span>
 
         <form method="post" action="{% url 'login' %}" class="form">
           {% csrf_token %}

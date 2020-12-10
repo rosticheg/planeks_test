@@ -3,6 +3,44 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-    <h1>Dashboard</h1>
-    <p>Welcome to your dashboard.</p>
+<div class="container">
+  <div class="row">
+    <div class="col-9">
+      <h3>Data schemas</h3>
+    </div>
+    <div class="col">
+
+      <form method="post" action="{% url 'login' %}" class="form">
+        {% csrf_token %}
+        <input type="submit" value="generate" class="btn btn-primary" />
+        <input type="hidden" name="next" value="{{ next }}" />
+      </form>
+
+    </div>
+  </div>
+</div>
+<br>
+
+<div class="container">
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th><b>Title</b></th>
+            <th><b>Modified</b></th>
+            <th><b>Actions</b></th>
+          </tr>
+        </thead>
+
+        {% for scheme in schemes %}
+          <tbody><tr><th scope="row">X</th>
+          <td><a href="">{{scheme.title}}</a></td>
+          <td>{{scheme.modified}}</td>
+          <td><a href=""><strong>Edit scheme</strong></a>&nbsp;&nbsp;&nbsp;<a href="" class="text-danger"><strong>Delete</strong></a></td>
+          </tr></tbody>
+	{% endfor %}
+      </table>
+</div>
+
 {% endblock %}

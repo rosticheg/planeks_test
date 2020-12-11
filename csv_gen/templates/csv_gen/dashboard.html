@@ -5,17 +5,11 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-9">
+    <div class="col-10">
       <h3>Data schemas</h3>
     </div>
     <div class="col">
-
-      <form method="post" action="{% url 'login' %}" class="form">
-        {% csrf_token %}
-        <input type="submit" value="generate" class="btn btn-primary" />
-        <input type="hidden" name="next" value="{{ next }}" />
-      </form>
-
+      <a href="/new_schema" class="btn btn-success" role="button">New schema</a>
     </div>
   </div>
 </div>

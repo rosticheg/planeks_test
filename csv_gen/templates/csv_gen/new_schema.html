@@ -4,6 +4,9 @@
 
 {% block content %}
 
+<form action="/generate/" method="post">
+{% csrf_token %}
+
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
 <div class="container">
@@ -12,13 +15,13 @@
       <h4>New Schema</h4>
     </div>
     <div class="col">
-      <a href="/generate" class="btn btn-primary" role="button">Generate</a>
+      <input type="submit" value="Submit" class="btn btn-primary">
     </div>
   </div>
   <div class="row">
     <div class="col-5">
       Name
-      <input type="schema_name" class="form-control" id="InputSchemaName">
+      <input type="text" name="schema_name" placeholder="SchemeName" class="form-control">
     </div>
   </div>
 </div>
@@ -57,7 +60,7 @@
 	</thead>
 	<tbody class="ui-sortable">
     	  <tr id="addr0" data-id="0" class="hidden">
-	    <td data-name="column_name">
+	    <td data-name="name">
 	      <input type="text" name="name0" placeholder="ColumnName" class="form-control">
 	    </td>
     	    <td data-name="typ">
@@ -91,8 +94,9 @@
   <a id="add_row" class="btn btn-primary float-right">Add Row</a>
 </div>
 
-
+</form>
 
 
 
 {% endblock %}
+

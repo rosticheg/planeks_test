@@ -123,6 +123,8 @@ STATIC_URL = '/static/'
 
 # Celery
 CELERY_BROKER_URL = 'amqp://localhost'
+CELERY_RESULT_BACKEND = 'rpc'
+#CELERY_RESULT_BACKEND = "amqp"
 
 
 # Redirect

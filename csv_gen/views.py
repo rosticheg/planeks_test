@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from .models import Schema
 from django.views.generic import TemplateView, ListView
+from django.http import HttpResponseRedirect, HttpResponseNotFound
+from .models import Schema
 from .tasks import create_csv_file
 import logging
 
@@ -31,9 +32,27 @@ def new_schema(request):
 @login_required
 def generate(request):
     create_csv_file.delay()
-    logger.error('GENERATE = ' + str(request))
+    if request.method == 'POST':
+        data = request.POST
+        for key in data:
+            logger.error('DATA = ' + str(key))
+            if key == 'schema_name':
+                 schema = Schema(title=data[key], user=request.user)
+                 schema.save()
+                
+
+        logger.error('GENERATE = ' + str(data))
+
     return render(request, 'csv_gen/generate.html')
 
+
+def del_scheme(request, s_id):
+    try:
+        scheme = Schema.objects.get(id=s_id)
+        scheme.delete()
+        return HttpResponseRedirect("/dashboard")
+    except Schema.DoesNotExist:
+        return HttpResponseNotFound("<h2>Schema not found</h2>")
 
 
 

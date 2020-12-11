@@ -1,7 +1,32 @@
 {% extends "csv_gen/base.html" %}
 
 {% block content %}
+
+
+<form action="/generate_csv/" method="post">
+  {% csrf_token %}
+  <div class="container">
+    <div class="row">
+      <div class="col-9">
+        <h4>Data sets</h4>
+      </div>
+      <div class="col-1">
+        <input type="text" name="schema_rows" placeholder="Rows" class="form-control">
+      </div>
+      <div class="col-1">
+        <input type="submit" value="Generate Data" class="btn btn-success">
+      </div>
+    </div>
+  </div>
+</form>
+<br>
+
 <div class="container">
-  <h1>GENERATOR</h1>
+  <div class="row">
+    <div class="col-10">
+    </div>
+  </div>
 </div>
+
+
 {% endblock %}

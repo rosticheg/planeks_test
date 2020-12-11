@@ -83,3 +83,4 @@ $(document).ready(function() {
 
     $("#add_row").trigger("click");
 });
+

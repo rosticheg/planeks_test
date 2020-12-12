@@ -34,15 +34,23 @@ def new_schema(request):
 @login_required
 def generate(request):
  
-    if request.method == 'POST':
-        data = request.POST
+#    if request.method == 'POST':
+    data = request.POST
 
-        f_dict = {}
-        schema_name = ''
-        for i in range(len(data)):
-            for key in data:
-                if key == 'schema_name':
-                    schema_name = data[key]
+    schema_name = ''
+    titles = []
+    types = []
+    order = []
+    for i in range(len(data)):
+        for key in data:
+            if key == 'schema_name':
+                schema_name = data[key]
+            if key == 'name'+str(i):
+                titles.append(data[key])
+            if key == 'typ'+str(i):
+                types.append(data[key])
+            if key == 'order'+str(i):
+                order.append(data[key])
 
 
     file_name = str(uuid.uuid4()) + ".csv"
@@ -53,25 +61,20 @@ def generate(request):
 
     context = {
         'schemes': Schema.objects.filter(user=request.user),
-        'current_schema': schema.id
     }    
 
+
+    titles = [x for _,x in sorted(zip(order,titles))] 
+    types = [x for _,x in sorted(zip(order,types))] 
     data = {
         'current_schema': schema.id,
-        'rows_number': 10,
-        'titles': ['name', 'job', 'city']
+        'rows_number': data['rows_number'],
+        'titles': titles,
+        'types': types
     }
     create_csv_file.delay(data)
 
-    return render(request, 'csv_gen/generate_csv.html', context)
-
-
-def generate_csv(request):
-    if request.method == 'POST':
-        data = request.POST
-        create_csv_file.delay(data)
-
-    return render(request, 'csv_gen/generate.html')
+    return render(request, 'csv_gen/generate.html', context)
 
 
 def del_scheme(request, s_id):

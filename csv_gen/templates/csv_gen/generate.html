@@ -3,23 +3,13 @@
 {% block content %}
 
 
-<form action="{% url 'generate_csv' %}" method="post">
-  {% csrf_token %}
-  <div class="container">
-    <div class="row">
-      <div class="col-9">
-        <h4>Data sets</h4>
-      </div>
-      <div class="col-1">
-        <input type="text" name="rows_number" placeholder="Rows" class="form-control">
-        <input type="hidden" name="current_schema" value="{{current_schema}}" />
-      </div>
-      <div class="col-1">
-        <input type="submit" value="Generate Data" class="btn btn-success">
-      </div>
+<div class="container">
+  <div class="row">
+    <div class="col-9">
+      <h4>Data sets</h4>
     </div>
   </div>
-</form>
+</div>
 <br>
 
 <div class="container">

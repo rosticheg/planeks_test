@@ -9,7 +9,7 @@
       <h3>Data schemas</h3>
     </div>
     <div class="col">
-      <a href="/new_schema" class="btn btn-success" role="button">New schema</a>
+      <a href="{% url 'new_schema' %}" class="btn btn-success" role="button">New schema</a>
     </div>
   </div>
 </div>
@@ -31,7 +31,7 @@
           <tbody><tr><th scope="row">X</th>
           <td><a href="">{{scheme.title}}</a></td>
           <td>{{scheme.modified}}</td>
-          <td><a href=""><strong>Edit scheme</strong></a>&nbsp;&nbsp;&nbsp;<a href= {% url 'del_view' s_id=scheme.id %} class="text-danger"><strong>Delete</strong></a></td>
+          <td><a href=""><strong>Edit scheme</strong></a>&nbsp;&nbsp;&nbsp;<a href={% url 'del_view' s_id=scheme.id %} class="text-danger"><strong>Delete</strong></a></td>
           </tr></tbody>
 	{% endfor %}
       </table>

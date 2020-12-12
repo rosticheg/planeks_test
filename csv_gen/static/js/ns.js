@@ -40,17 +40,6 @@ $(document).ready(function() {
             }
         });
         
-        // add delete button and td
-        /*
-        $("<td></td>").append(
-            $("<button class='btn btn-danger glyphicon glyphicon-remove row-remove'></button>")
-                .click(function() {
-                    $(this).closest("tr").remove();
-                })
-        ).appendTo($(tr));
-        */
-        
-        // add the new row
         $(tr).appendTo($('#tab_logic'));
         
         $(tr).find("td button.row-remove").on("click", function() {

@@ -1,10 +1,11 @@
+
 {% extends "csv_gen/base.html" %}
 
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
 
-<form action="/generate/" method="post">
+<form action="{% url 'generate' %}" method="post">
 {% csrf_token %}
 
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>

@@ -5,8 +5,6 @@ from django.http import HttpResponseRedirect, HttpResponseNotFound
 from .models import Schema
 from .tasks import create_csv_file
 import logging
-import uuid
-
 
 
 # Get an instance of a logger
@@ -33,10 +31,9 @@ def new_schema(request):
 
 @login_required
 def generate(request):
- 
+    create_csv_file.delay()
     if request.method == 'POST':
         data = request.POST
-#        create_csv_file.delay(data)
 
         f_dict = {}
         schema_name = ''
@@ -44,32 +41,22 @@ def generate(request):
             for key in data:
                 if key == 'schema_name':
                     schema_name = data[key]
+                if key == "order"+str(i):
+                    f_dict[i] = data[key]
 
 
-    file_name = str(uuid.uuid4()) + ".csv"
-    schema = Schema(title=schema_name, user=request.user, file_name=file_name)
-    schema.save()
+        for key in f_dict:
+            logger.error('DICT = ' + str(key) + "____" + f_dict[key])        
 
-    logger.error('SCHEMA = ' + str(schema.id))
+#        for key in data:
+#            logger.error('DATA = ' + str(key))
 
-    context = {
-        'schemes': Schema.objects.filter(user=request.user),
-        'current_schema': schema.id
-    }    
+#            if key == 'schema_name':
+#                 schema = Schema(title=data[key], user=request.user)
+#                 schema.save()
+                
 
-    data = {
-        'current_schema': schema.id,
-        'rows_number': 10
-    }
-    create_csv_file.delay(data)
-
-    return render(request, 'csv_gen/generate_csv.html', context)
-
-
-def generate_csv(request):
-    if request.method == 'POST':
-        data = request.POST
-        create_csv_file.delay(data)
+        logger.error('GENERATE = ' + str(data))
 
     return render(request, 'csv_gen/generate.html')
 

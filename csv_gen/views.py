@@ -8,7 +8,6 @@ import logging
 import uuid
 
 
-
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
@@ -33,48 +32,47 @@ def new_schema(request):
 
 @login_required
 def generate(request):
- 
-#    if request.method == 'POST':
-    data = request.POST
 
-    schema_name = ''
-    titles = []
-    types = []
-    order = []
-    for i in range(len(data)):
-        for key in data:
-            if key == 'schema_name':
-                schema_name = data[key]
-            if key == 'name'+str(i):
-                titles.append(data[key])
-            if key == 'typ'+str(i):
-                types.append(data[key])
-            if key == 'order'+str(i):
-                order.append(data[key])
+    if request.method == 'POST':
+        data = request.POST
 
-
-    file_name = str(uuid.uuid4()) + ".csv"
-    schema = Schema(title=schema_name, user=request.user, file_name=file_name)
-    schema.save()
-
-    logger.error('SCHEMA = ' + str(schema.id))
-
-    context = {
-        'schemes': Schema.objects.filter(user=request.user),
-    }    
+        schema_name = ''
+        titles = []
+        types = []
+        order = []
+        for i in range(len(data)):
+            for key in data:
+                if key == 'schema_name':
+                    schema_name = data[key]
+                if key == 'name'+str(i):
+                    titles.append(data[key])
+                if key == 'typ'+str(i):
+                    types.append(data[key])
+                if key == 'order'+str(i):
+                    order.append(data[key])
 
 
-    titles = [x for _,x in sorted(zip(order,titles))] 
-    types = [x for _,x in sorted(zip(order,types))] 
-    data = {
-        'current_schema': schema.id,
-        'rows_number': data['rows_number'],
-        'titles': titles,
-        'types': types
-    }
-    create_csv_file.delay(data)
+        file_name = str(uuid.uuid4()) + ".csv"
+        schema = Schema(title=schema_name, user=request.user, file_name=file_name)
+        schema.save()
 
-    return render(request, 'csv_gen/generate.html', context)
+        context = {
+            'schemes': Schema.objects.filter(user=request.user),
+        }    
+
+        titles = [x for _,x in sorted(zip(order,titles))] 
+        types = [x for _,x in sorted(zip(order,types))] 
+        data = {
+            'current_schema': schema.id,
+            'rows_number': data['rows_number'],
+            'titles': titles,
+            'types': types
+        }
+        create_csv_file.delay(data)
+
+        return render(request, 'csv_gen/generate.html', context)
+
+    return render(request, 'csv_gen/new_schema.html')
 
 
 def del_scheme(request, s_id):

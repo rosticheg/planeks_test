@@ -5,9 +5,8 @@ from django.utils.crypto import get_random_string
 from celery import shared_task
 from .models import Schema
 from django.conf import settings
+from mimesis import Generic
 
-from random import choice
-from string import ascii_uppercase
 import logging
 
 
@@ -19,7 +18,6 @@ logger = logging.getLogger(__name__)
 def create_csv_file(data):
     logger.error('STARTTTTTT')
 
-    logger.error('DATA' + str(data))
     schema_id = data['current_schema']
     rows_number = int(data['rows_number'])
 
@@ -28,15 +26,16 @@ def create_csv_file(data):
         
     titles = []
     titles = data['titles']
+    types = []
+    types = data['types']
 
     rows = []
     for i in range(rows_number):
         one_row = []
         for j in range(len(titles)):
-            one_row.append(''.join(choice(ascii_uppercase) for k in range(12)))
+            logger.error('TYPE' + str(types[j]))            
+            one_row.append(_generate_fake_news(types[j]))
         rows.append(one_row)
-
-
 
     with open(settings.MEDIA_URL + file_name, 'w', encoding='utf-8', newline='') as f:
         writer = csv.writer(f, dialect='excel')
@@ -48,6 +47,37 @@ def create_csv_file(data):
     schema.save()
 
     logger.error('STOPPPPPPP')
+
+def _generate_fake_news(typ):
+    g = Generic('en')
+
+    fake = ''
+    if typ == '1':
+        fake = g.person.full_name() 
+    elif typ == '2':
+        fake = g.person.occupation() 
+    elif typ == '3':
+        fake = g.person.email() 
+    elif typ == '4':
+        fake = g.internet.home_page()
+    elif typ == '5':
+        fake = g.person.telephone()
+    elif typ == '6':
+        fake = g.business.company()
+    elif typ == '7':
+        fake = g.text.title()
+    elif typ == '8':
+        fake = g.numbers.integer_number()
+    elif typ == '9':
+        fake = g.address.address() 
+    elif typ == '10':
+        fake = g.datetime.datetime()
+    else:
+        fake = '----'
+
+    return fake
+
+
 
 
 

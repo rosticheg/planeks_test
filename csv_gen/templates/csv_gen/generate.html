@@ -44,7 +44,13 @@
               <button type="button" class="btn btn-secondary btn-sm">Processing</button>
             {% endif %}
           </td>
-          <td><a href="/media/{{ MEDIA_URL }}{{scheme.file_name}}"><strong>Download</strong></a></a></td>
+          <td>
+            {% if scheme.status %}
+              <a href="/media/{{ MEDIA_URL }}{{scheme.file_name}}"><strong>Download</strong></a></a>
+            {% else %}
+              Not available
+            {% endif %}
+          </td>
           </tr></tbody>
 	{% endfor %}
       </table>

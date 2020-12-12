@@ -35,7 +35,7 @@
         </thead>
 
         {% for scheme in schemes %}
-          <tbody><tr><th scope="row">{{scheme.id}}</th>
+        <tbody><tr><th scope="row">{{scheme.id}}</th>
           <td>{{scheme.created}}</td>
           <td>
             {% if scheme.status %}
@@ -44,8 +44,14 @@
               <button type="button" class="btn btn-secondary btn-sm">Processing</button>
             {% endif %}
           </td>
-          <td><a href="/media/{{ MEDIA_URL }}{{scheme.file_name}}"><strong>Download</strong></a></a></td>
-          </tr></tbody>
+          <td>
+            {% if scheme.status %}
+              <a href="/media/{{ MEDIA_URL }}{{scheme.file_name}}"><strong>Download</strong></a></a>
+            {% else %}
+              Not available
+            {% endif %}
+          </td>
+        </tr></tbody>
 	{% endfor %}
       </table>
 </div>

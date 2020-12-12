@@ -28,8 +28,8 @@
         </thead>
 
         {% for scheme in schemes %}
-          <tbody><tr><th scope="row">X</th>
-          <td><a href="">{{scheme.title}}</a></td>
+          <tbody><tr><th scope="row">{{ scheme.id }}</th>
+          <td><a href="{% url 'check_scheme' %}?id={{scheme.id}}">{{scheme.title}}</a></td>
           <td>{{scheme.modified}}</td>
           <td><a href=""><strong>Edit scheme</strong></a>&nbsp;&nbsp;&nbsp;<a href={% url 'del_view' s_id=scheme.id %} class="text-danger"><strong>Delete</strong></a></td>
           </tr></tbody>

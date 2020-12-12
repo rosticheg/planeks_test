@@ -22,7 +22,7 @@
   <div class="row">
     <div class="col-5">
       Name
-      <input type="text" name="schema_name" placeholder="SchemeName" class="form-control">
+      <input type="text" name="schema_name" placeholder="SchemeName" class="form-control" required>
     </div>
   </div>
 </div>
@@ -62,12 +62,12 @@
 	<tbody class="ui-sortable">
     	  <tr id="addr0" data-id="0" class="hidden">
 	    <td data-name="name">
-	      <input type="text" name="name0" placeholder="ColumnName" class="form-control">
+	      <input type="text" name="name0" placeholder="ColumnName" class="form-control" required>
 	    </td>
     	    <td data-name="typ">
-	      <select name="typ0" class="form-control"> 
+	      <select name="typ0" class="form-control" required> 
                 <option value="">Select Option</option>
-    	        <option value="1">Full Name</option>
+    	        <option value="1" selected="selected">Full Name</option>
                 <option value="2">Job</option>
         	<option value="3">Email</option>
         	<option value="4">Domain name</option>
@@ -82,7 +82,7 @@
 	    <td data-name="from_to">
 	    </td>
 	    <td data-name="order">
-	      <input type="text" name="order0" placeholder="Order" class="form-control" size="3">
+	      <input type="text" name="order0" placeholder="Order" class="form-control" size="3" value="0">
 	    </td>
             <td data-name="del">
               <button name="del0" class="btn btn-danger glyphicon glyphicon-remove row-remove"><span aria-hidden="true">X</span></button>

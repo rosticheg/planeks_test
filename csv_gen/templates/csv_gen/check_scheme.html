@@ -11,24 +11,33 @@
 </div>
 <br>
 
+{{scheme.title}}
 <div class="container">
       <table class="table table-bordered">
         <thead>
           <tr>
-            <th>#</th>
+            <th>Id</th>
             <th><b>Title</b></th>
+            <th><b>Created</b></th>
             <th><b>Modified</b></th>
+            <th><b>Status</b></th>
             <th><b>Actions</b></th>
           </tr>
         </thead>
 
-        {% for scheme in schemes %}
-          <tbody><tr><th scope="row">X</th>
-          <td><a href="">{{scheme.title}}</a></td>
-          <td>{{scheme.modified}}</td>
-          <td><a href=""><strong>Edit scheme</strong></a>&nbsp;&nbsp;&nbsp;<a href= {% url 'del_view' s_id=scheme.id %} class="text-danger"><strong>Delete</strong></a></td>
-          </tr></tbody>
-	{% endfor %}
+        <tbody><tr><th scope="row">{{scheme.id}}</th>
+        <td>{{scheme.title}}</td>
+        <td>{{scheme.created}}</td>
+        <td>{{scheme.modified}}</td>
+        <td>
+          {% if scheme.status %}
+            <button type="button" class="btn btn-success btn-sm">Ready</button>
+          {% else %}
+            <button type="button" class="btn btn-secondary btn-sm">Processing</button>
+          {% endif %}
+        </td>
+        <td><a href= {% url 'del_view' s_id=scheme.id %} class="text-danger"><strong>Delete</strong></a></td>
+        </tr></tbody>
       </table>
 </div>
 

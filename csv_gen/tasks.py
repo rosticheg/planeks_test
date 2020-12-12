@@ -27,23 +27,22 @@ def create_csv_file(data):
     schema = Schema.objects.get(id=schema_id)
     file_name = str(schema.file_name)
         
-    logger.error('FILENAME' + str(file_name) )
-
 
     names = []
-    for i in range(len(data)-2):
-        for key in data:
-            if key == "name"+str(i):
-                names.append(data[key])
+    names = data['titles']
+#    for i in range(len(data)-2):
+#        for key in data:
+#            if key == "name"+str(i):
+#                names.append(data[key])
 
    
     dataa = []
     dataa.append(names)
-    logger.error('DATA' + str(dataa) )
-    for i in range(rows_number):
-        for j in range(len(names)):
-            names[j] = ''.join(choice(ascii_uppercase) for k in range(12))
-        dataa.append(names)
+#    logger.error('DATA' + str(dataa) )
+#    for i in range(rows_number):
+#        for j in range(len(names)):
+#            names[j] = ''.join(choice(ascii_uppercase) for k in range(12))
+#        dataa.append(names)
 
 
 

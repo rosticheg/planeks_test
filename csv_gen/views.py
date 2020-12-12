@@ -36,7 +36,6 @@ def generate(request):
  
     if request.method == 'POST':
         data = request.POST
-#        create_csv_file.delay(data)
 
         f_dict = {}
         schema_name = ''
@@ -59,7 +58,8 @@ def generate(request):
 
     data = {
         'current_schema': schema.id,
-        'rows_number': 10
+        'rows_number': 10,
+        'titles': ['name', 'job', 'city']
     }
     create_csv_file.delay(data)
 
@@ -74,7 +74,6 @@ def generate_csv(request):
     return render(request, 'csv_gen/generate.html')
 
 
-
 def del_scheme(request, s_id):
     try:
         scheme = Schema.objects.get(id=s_id)
@@ -83,5 +82,15 @@ def del_scheme(request, s_id):
     except Schema.DoesNotExist:
         return HttpResponseNotFound("<h2>Schema not found</h2>")
 
+
+def check_scheme(request):
+    context = {}
+    if request.method == 'GET':
+        s_id = request.GET.get("id")
+        scheme = Schema.objects.get(id=s_id)
+        context = {
+            'scheme': scheme
+        }    
+    return render(request, 'csv_gen/check_scheme.html', context)
 
 

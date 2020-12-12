@@ -120,6 +120,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Media
+MEDIA_ROOT = 'c:\media'
+MEDIA_URL = '/media/'
+
 
 # Celery
 CELERY_BROKER_URL = 'amqp://localhost'

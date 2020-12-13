@@ -134,4 +134,4 @@ CELERY_RESULT_BACKEND = 'rpc'
 # Redirect
 LOGIN_REDIRECT_URL='/dashboard'
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

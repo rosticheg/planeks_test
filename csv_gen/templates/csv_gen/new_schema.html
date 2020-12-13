@@ -29,6 +29,19 @@
       <input type="number" name="rows_number" placeholder="Rows" class="form-control" value=100 required>
     </div>
   </div>
+  <br>
+
+  <div class="row">
+    <div class="col-5">
+      Column separator
+      <select name="separ" class="form-control" required> 
+        <option value=";" selected="selected">Semicolon</option>
+        <option value="," >Coma</option>
+      </select>
+    </div>
+  </div>
+
+
 </div>
 <br>
 
@@ -86,7 +99,7 @@
 	    <td data-name="from_to">
 	    </td>
 	    <td data-name="order" width=10%>
-	      <input type="number" name="order0" placeholder="Order" class="form-control" size="3" value="0" required>
+	      <input type="number" name="order0" placeholder="Order" class="form-control" size="3" required>
 	    </td>
             <td data-name="del" width=5%>
               <button name="del0" class="btn btn-danger glyphicon glyphicon-remove row-remove"><span aria-hidden="true">X</span></button>

@@ -1,0 +1,50 @@
+{% extends "csv_gen/base.html" %}
+
+{% block content %}
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-9">
+      <h4>Data sets</h4>
+    </div>
+  </div>
+</div>
+<br>
+
+<div class="container">
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th><b>Created</b></th>
+            <th><b>Status</b></th>
+            <th><b>Actions</b></th>
+          </tr>
+        </thead>
+
+        {% for scheme in schemes %}
+          <tbody><tr><th scope="row">{{scheme.id}}</th>
+          <td>{{scheme.created}}</td>
+          <td>
+            {% if scheme.status %}
+              <button type="button" class="btn btn-success btn-sm">Ready</button>
+            {% else %}
+              <button type="button" class="btn btn-secondary btn-sm">Processing</button>
+            {% endif %}
+          </td>
+          <td>
+            {% if scheme.status %}
+              <a href="/media/{{ MEDIA_URL }}{{scheme.file_name}}"><strong>Download</strong></a></a>
+            {% else %}
+              Not available
+            {% endif %}
+          </td>
+          </tr></tbody>
+	{% endfor %}
+      </table>
+</div>
+
+
+{% endblock %}

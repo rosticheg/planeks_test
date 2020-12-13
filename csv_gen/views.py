@@ -4,12 +4,7 @@ from django.views.generic import TemplateView, ListView
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from .models import Schema
 from .tasks import create_csv_file
-import logging
 import uuid
-
-
-# Get an instance of a logger
-logger = logging.getLogger(__name__)
 
 
 @login_required
@@ -37,6 +32,7 @@ def generate(request):
         data = request.POST
 
         schema_name = ''
+        separ = data['separ']
         titles = []
         types = []
         order = []
@@ -66,11 +62,12 @@ def generate(request):
             'current_schema': schema.id,
             'rows_number': data['rows_number'],
             'titles': titles,
-            'types': types
+            'types': types,
+            'separ': separ
         }
         create_csv_file.delay(data)
 
-        return render(request, 'csv_gen/generate.html', context)
+        return render(request, 'csv_gen/my_schemas.html', context)
 
     return render(request, 'csv_gen/new_schema.html')
 
@@ -93,5 +90,12 @@ def check_scheme(request):
             'scheme': scheme
         }    
     return render(request, 'csv_gen/check_scheme.html', context)
+
+
+def my_schemas(request):
+    context = {
+        'schemes': Schema.objects.filter(user=request.user)
+    }    
+    return render(request, 'csv_gen/my_schemas.html', context)
 
 

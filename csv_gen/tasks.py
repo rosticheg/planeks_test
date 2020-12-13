@@ -7,19 +7,13 @@ from .models import Schema
 from django.conf import settings
 from mimesis import Generic
 
-import logging
-
-
-# Get an instance of a logger
-logger = logging.getLogger(__name__)
-
 
 @shared_task
 def create_csv_file(data):
-    logger.error('STARTTTTTT')
 
     schema_id = data['current_schema']
     rows_number = int(data['rows_number'])
+    separ = data['separ']
 
     schema = Schema.objects.get(id=schema_id)
     file_name = str(schema.file_name)
@@ -33,20 +27,18 @@ def create_csv_file(data):
     for i in range(rows_number):
         one_row = []
         for j in range(len(titles)):
-            logger.error('TYPE' + str(types[j]))            
             one_row.append(_generate_fake_news(types[j]))
-        rows.append(one_row)
+        rows.append([separ.join(one_row)])
 
     with open(settings.MEDIA_URL + file_name, 'w', encoding='utf-8', newline='') as f:
         writer = csv.writer(f, dialect='excel')
-        writer.writerow(titles)
+        writer.writerow([separ.join(titles)])
         for row in rows:
             writer.writerow(row)
 
     schema.status = True
     schema.save()
 
-    logger.error('STOPPPPPPP')
 
 def _generate_fake_news(typ):
     g = Generic('en')

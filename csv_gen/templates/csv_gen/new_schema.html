@@ -5,6 +5,16 @@
 
 {% block content %}
 
+<div class="container">
+  <div class="row">
+    <div class="col-10">
+      {% if error %}
+        <span class="text-danger"><b>{{ error }}</b></span>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
 <form action="{% url 'generate' %}" method="post">
 {% csrf_token %}
 

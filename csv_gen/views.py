@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView, ListView
 from django.http import HttpResponseRedirect, HttpResponseNotFound
+from django.core.exceptions import ObjectDoesNotExist
 from .models import Schema
 from .tasks import create_csv_file
 import uuid
@@ -55,10 +56,6 @@ def generate(request):
         schema = Schema(title=schema_name, user=request.user, file_name=file_name)
         schema.save()
 
-        context = {
-            'schemes': Schema.objects.filter(user=request.user),
-        }    
-
         titles = [x for _,x in sorted(zip(order,titles))] 
         types = [x for _,x in sorted(zip(order,types))] 
         if(len(titles)==0 or len(types)==0):
@@ -73,12 +70,19 @@ def generate(request):
         }
         res = create_csv_file.delay(data)
         if(res==0):
-            return render(request, 'csv_gen/new_schema.html')
+            context = {
+                'error': 'There was some kind of mystical error. Try again'
+            }    
+
+            return render(request, 'csv_gen/new_schema.html', context)
         else:
+            context = {
+                'schemes': Schema.objects.filter(user=request.user),
+            }    
             return render(request, 'csv_gen/my_schemas.html', context)
 
 
-    return render(request, 'csv_gen/new_schema.html')
+    return render(request, 'csv_gen/new_schema.html', {'error': 'An error has occurred. Try again'})
 
 
 def del_scheme(request, s_id):
@@ -86,7 +90,7 @@ def del_scheme(request, s_id):
         scheme = Schema.objects.get(id=s_id)
         scheme.delete()
         return HttpResponseRedirect("/dashboard")
-    except Schema.DoesNotExist:
+    except ObjectDoesNotExist:
         return HttpResponseNotFound("<h2>Schema not found</h2>")
 
 
@@ -94,7 +98,11 @@ def check_scheme(request):
     context = {}
     if request.method == 'GET':
         s_id = request.GET.get("id")
-        scheme = Schema.objects.get(id=s_id)
+        try:
+            scheme = Schema.objects.get(id=s_id)
+        except ObjectDoesNotExist:
+            return HttpResponseNotFound("<h2>Schema not found</h2>")
+
         context = {
             'scheme': scheme
         }    

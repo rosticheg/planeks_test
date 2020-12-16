@@ -6,6 +6,11 @@ from celery import shared_task
 from .models import Schema
 from django.conf import settings
 from mimesis import Generic
+from django.core.exceptions import ObjectDoesNotExist
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 @shared_task
@@ -15,7 +20,13 @@ def create_csv_file(data):
     rows_number = int(data['rows_number'])
     separ = data['separ']
 
-    schema = Schema.objects.get(id=schema_id)
+
+    try:
+        schema = Schema.objects.get(id=schema_id)
+    except ObjectDoesNotExist:
+        logger.error('Can not find schema {}'.format(schema_id))
+        return 0
+
     file_name = str(schema.file_name)
         
     titles = []
@@ -38,6 +49,9 @@ def create_csv_file(data):
 
     schema.status = True
     schema.save()
+    logging.info('Scheme {} csv was created'.format(schema_id))
+
+    return 1
 
 
 def _generate_fake_news(typ):

@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponseNotFound
 from .models import Schema
 from .tasks import create_csv_file
 import uuid
+import re
 
 
 @login_required
@@ -36,12 +37,14 @@ def generate(request):
         titles = []
         types = []
         order = []
+        reg = re.compile('[^a-zA-Z ]')
+
         for i in range(len(data)):
             for key in data:
                 if key == 'schema_name':
-                    schema_name = data[key]
+                    schema_name = reg.sub('', data[key])
                 if key == 'name'+str(i):
-                    titles.append(data[key])
+                    titles.append(reg.sub('', data[key]))
                 if key == 'typ'+str(i):
                     types.append(data[key])
                 if key == 'order'+str(i):

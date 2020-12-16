@@ -48,7 +48,7 @@ def create_csv_file(data):
 
         rows.append([separ.join(one_row)])
         counter += 1    
-        if(counter==10 or i==rows_number-1):
+        if(counter==100 or i==rows_number-1):
             _write_pack(file_name, rows)
             counter = 0
             rows = []

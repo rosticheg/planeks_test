@@ -34,24 +34,37 @@ def create_csv_file(data):
     types = []
     types = data['types']
 
+    with open(settings.MEDIA_URL + file_name, 'w', encoding='utf-8', newline='') as f:
+        writer = csv.writer(f, dialect='excel')
+        writer.writerow([separ.join(titles)])
+
+
     rows = []
+    counter = 0
     for i in range(rows_number):
         one_row = []
         for j in range(len(titles)):
             one_row.append(_generate_fake_news(types[j]))
+
         rows.append([separ.join(one_row)])
-
-    with open(settings.MEDIA_URL + file_name, 'w', encoding='utf-8', newline='') as f:
-        writer = csv.writer(f, dialect='excel')
-        writer.writerow([separ.join(titles)])
-        for row in rows:
-            writer.writerow(row)
-
+        counter += 1    
+        if(counter==10 or i==rows_number-1):
+            _write_pack(file_name, rows)
+            counter = 0
+            rows = []
+    
     schema.status = True
     schema.save()
     logging.info('Scheme {} csv was created'.format(schema_id))
 
     return 1
+
+
+def _write_pack(file_name, rows):
+    with open(settings.MEDIA_URL + file_name, 'a', encoding='utf-8', newline='') as f:
+        writer = csv.writer(f, dialect='excel')
+        for row in rows:
+            writer.writerow(row)
 
 
 def _generate_fake_news(typ):

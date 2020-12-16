@@ -7,6 +7,10 @@ from .models import Schema
 from .tasks import create_csv_file
 import uuid
 import re
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 @login_required
@@ -59,7 +63,8 @@ def generate(request):
         titles = [x for _,x in sorted(zip(order,titles))] 
         types = [x for _,x in sorted(zip(order,types))] 
         if(len(titles)==0 or len(types)==0):
-            return render(request, 'csv_gen/new_schema.html')
+            logger.error('Titles or Types list is empty')
+            return render(request, 'csv_gen/new_schema.html', {'error': 'An error has occurred. Try again'})
 
         data = {
             'current_schema': schema.id,
@@ -68,20 +73,13 @@ def generate(request):
             'types': types,
             'separ': separ
         }
-        res = create_csv_file.delay(data)
-        if(res==0):
-            context = {
-                'error': 'There was some kind of mystical error. Try again'
-            }    
+        create_csv_file.delay(data)
+        context = {
+           'schemes': Schema.objects.filter(user=request.user),
+        }    
+        return render(request, 'csv_gen/my_schemas.html', context)
 
-            return render(request, 'csv_gen/new_schema.html', context)
-        else:
-            context = {
-                'schemes': Schema.objects.filter(user=request.user),
-            }    
-            return render(request, 'csv_gen/my_schemas.html', context)
-
-
+    logger.error('Generate do not receive post data')
     return render(request, 'csv_gen/new_schema.html', {'error': 'An error has occurred. Try again'})
 
 

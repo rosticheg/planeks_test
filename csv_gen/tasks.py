@@ -1,12 +1,12 @@
-import string
-import csv
 from django.contrib.auth.models import User
 from django.utils.crypto import get_random_string
+from django.core.exceptions import ObjectDoesNotExist
+from django.conf import settings
 from celery import shared_task
 from .models import Schema
-from django.conf import settings
 from mimesis import Generic
-from django.core.exceptions import ObjectDoesNotExist
+import string
+import csv
 import logging
 
 

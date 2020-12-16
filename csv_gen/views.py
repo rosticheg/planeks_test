@@ -60,11 +60,12 @@ def generate(request):
         schema = Schema(title=schema_name, user=request.user, file_name=file_name)
         schema.save()
 
-        titles = [x for _,x in sorted(zip(order,titles))] 
-        types = [x for _,x in sorted(zip(order,types))] 
-        if(len(titles)==0 or len(types)==0):
+        if(len(titles)==0 or len(types)==0 or len(order)==0):
             logger.error('Titles or Types list is empty')
             return render(request, 'csv_gen/new_schema.html', {'error': 'An error has occurred. Try again'})
+
+        titles = [x for _,x in sorted(zip(order,titles))] 
+        types = [x for _,x in sorted(zip(order,types))] 
 
         data = {
             'current_schema': schema.id,

@@ -58,6 +58,9 @@ def generate(request):
 
         titles = [x for _,x in sorted(zip(order,titles))] 
         types = [x for _,x in sorted(zip(order,types))] 
+        if(len(titles)==0 or len(types)==0):
+            return render(request, 'csv_gen/new_schema.html')
+
         data = {
             'current_schema': schema.id,
             'rows_number': data['rows_number'],
@@ -65,9 +68,12 @@ def generate(request):
             'types': types,
             'separ': separ
         }
-        create_csv_file.delay(data)
+        res = create_csv_file.delay(data)
+        if(res==0):
+            return render(request, 'csv_gen/new_schema.html')
+        else:
+            return render(request, 'csv_gen/my_schemas.html', context)
 
-        return render(request, 'csv_gen/my_schemas.html', context)
 
     return render(request, 'csv_gen/new_schema.html')
 

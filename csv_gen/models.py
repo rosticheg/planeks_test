@@ -13,7 +13,7 @@ class Schema(models.Model):
 
     class Meta:
         verbose_name = 'Schema'
-        verbose_name_plural = 'Schemas'
+        verbose_name_plural = 'Schema'
         
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

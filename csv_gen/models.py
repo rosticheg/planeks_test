@@ -11,6 +11,10 @@ class Schema(models.Model):
     file_name = models.FileField("Schema file", upload_to="media/", blank=True, null=True)
     status = models.BooleanField(default=False)
 
+    class Meta:
+        verbose_name = 'Schema'
+        verbose_name_plural = 'Schemas'
+        
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
